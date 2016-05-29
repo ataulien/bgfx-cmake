@@ -1,2 +1,5 @@
 # bgfx-cmake
-CMake-Compilation for the bgfx-library
+CMake-compilation for the bgfx-library
+
+> Description is work-in-progress.
+> Currently only builds on linux.

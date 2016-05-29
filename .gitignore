@@ -13,9 +13,6 @@
 *.dylib
 *.dll
 
-# Fortran module files
-*.mod
-
 # Compiled Static libraries
 *.lai
 *.la
@@ -26,3 +23,16 @@
 *.exe
 *.out
 *.app
+
+#vdf
+*.vdf
+*.mod
+
+#build dir
+build/
+
+#dolphin
+.directory
+ 
+# clion
+.idea/

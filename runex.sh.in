@@ -1,0 +1,2 @@
+#!/bin/bash
+(cd ${CMAKE_CURRENT_SOURCE_DIR}/bgfx/examples/runtime && ${CMAKE_BINARY_DIR}/$@)
