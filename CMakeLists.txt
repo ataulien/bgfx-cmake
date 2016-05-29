@@ -5,14 +5,14 @@ project(bgfx)
 include_directories(3rdparty/khronos)
 
 file(GLOB BGFX_3RD_PARTY
-    "bgfx/3rdparty/edtaa3/*.cpp"
-    "bgfx/3rdparty/etc1/*.cpp"
-    "bgfx/3rdparty/etc2/*.cpp"
-    "bgfx/3rdparty/fcpp/*.cpp"
-    "bgfx/3rdparty/ib-compress/*.cpp"
-    "bgfx/3rdparty/libsquish/*.cpp"
-    "bgfx/3rdparty/ocornut-imgui/*.cpp"
-    "bgfx/3rdparty/stb/*.cpp"
+    "./bgfx/3rdparty/edtaa3/*.cpp"
+    "./bgfx/3rdparty/etc1/*.cpp"
+    "./bgfx/3rdparty/etc2/*.cpp"
+    "./bgfx/3rdparty/fcpp/*.cpp"
+    "./bgfx/3rdparty/ib-compress/*.cpp"
+    "./bgfx/3rdparty/libsquish/*.cpp"
+    "./bgfx/3rdparty/ocornut-imgui/*.cpp"
+    "./bgfx/3rdparty/stb/*.cpp"
     )
 
 add_library(bgfx3rdParty STATIC ${BGFX_3RD_PARTY})
@@ -20,14 +20,14 @@ set_target_properties(bgfx3rdParty PROPERTIES LINKER_LANGUAGE C)
     
 # ------------------ Main library ----------------------
 file(GLOB BGFX_SRC
-    "bgfx/src/amalgamated.cpp")
+    "./bgfx/src/amalgamated.cpp")
     
 include_directories(bgfx/include)
 include_directories(bx/include)
 include_directories(bgfx/3rdparty/khronos)
 include_directories(bgfx/3rdparty)
 include_directories(bgfx/examples/common)
-        
+include_directories(bgfx/examples)
     
 add_library(bgfx STATIC ${BGFX_SRC})
 set_target_properties(bgfx PROPERTIES LINKER_LANGUAGE C)
@@ -38,12 +38,12 @@ endif()
 
 # ------------------ Common library ----------------------
 file(GLOB COMMON_SRC
-    "bgfx/examples/common/*.cpp"
-    "bgfx/examples/common/debugdraw/*.cpp"
-    "bgfx/examples/common/entry/*.cpp"
-    "bgfx/examples/common/font/*.cpp"
-    "bgfx/examples/common/imgui/*.cpp"
-    "bgfx/examples/common/nanovg/*.cpp")
+    "./bgfx/examples/common/*.cpp"
+    "./bgfx/examples/common/debugdraw/*.cpp"
+    "./bgfx/examples/common/entry/*.cpp"
+    "./bgfx/examples/common/font/*.cpp"
+    "./bgfx/examples/common/imgui/*.cpp"
+    "./bgfx/examples/common/nanovg/*.cpp")
     
 add_library(bgfx_common STATIC ${COMMON_SRC})
 set_target_properties(bgfx_common PROPERTIES LINKER_LANGUAGE C)
