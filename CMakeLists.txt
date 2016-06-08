@@ -25,7 +25,24 @@ set_target_properties(bgfx3rdParty PROPERTIES LINKER_LANGUAGE C)
 target_include_directories(bgfx3rdParty PUBLIC bgfx/3rdparty/khronos)
 target_include_directories(bgfx3rdParty PUBLIC bgfx/3rdparty)
 target_include_directories(bgfx3rdParty PUBLIC bx/include)
+
+if(MINGW)
+    target_include_directories(bgfx3rdParty PUBLIC bx/include/compat/mingw)
+
+    add_definitions(-DBGFX_CONFIG_RENDERER_DIRECT3D9=0)
+    add_definitions(-DBGFX_CONFIG_RENDERER_DIRECT3D11=0)
+    add_definitions(-DBGFX_CONFIG_RENDERER_DIRECT3D12=0)
+    add_definitions(-D__STDC_FORMAT_MACROS)
     
+
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wunused-value")
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fdata-sections")
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ffunction-sections")
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -msse2")
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wunused-value")
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wundef")
+endif()
+
 # ------------------ Main library ----------------------
 file(GLOB BGFX_SRC
     "./bgfx/src/amalgamated.cpp")
