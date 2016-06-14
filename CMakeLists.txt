@@ -1,8 +1,7 @@
 cmake_minimum_required(VERSION 3.1)
 project(bgfx)
 
-
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DBGFX_CONFIG_DEBUG=1")
+add_definitions(-DBGFX_CONFIG_DEBUG=1)
 
 # -------------------- 3rd party -----------------------
 include_directories(3rdparty/khronos)
@@ -41,6 +40,18 @@ if(MINGW)
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -msse2")
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wunused-value")
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wundef")
+endif()
+
+if(MSVC)
+	
+    add_definitions(-DBGFX_CONFIG_RENDERER_OPENGL=1)
+    add_definitions(-DBGFX_CONFIG_RENDERER_DIRECT3D12=0)
+
+	target_include_directories(bgfx3rdParty PUBLIC bx/include/compat/msvc)
+	add_definitions( "/D_CRT_SECURE_NO_WARNINGS /wd4577 /wd4996" )
+	add_definitions(-D__STDC_FORMAT_MACROS)
+	
+	target_link_libraries(bgfx3rdParty Psapi)
 endif()
 
 # ------------------ Main library ----------------------
