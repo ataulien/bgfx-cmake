@@ -43,6 +43,19 @@ if(MINGW)
     SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wundef")
 endif()
 
+if(MSVC)
+	add_definitions(-DBGFX_CONFIG_RENDERER_DIRECT3D9=0)
+    add_definitions(-DBGFX_CONFIG_RENDERER_DIRECT3D11=0)
+    add_definitions(-DBGFX_CONFIG_RENDERER_DIRECT3D12=0)
+	add_definitions(-DBGFX_CONFIG_RENDERER_OPENGL=1)
+    add_definitions(-D__STDC_FORMAT_MACROS)
+
+	target_link_libraries(bgfx3rdParty Psapi)
+	target_include_directories(bgfx3rdParty PUBLIC bx/include/compat/msvc)
+	
+	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
+endif()
+
 # ------------------ Main library ----------------------
 file(GLOB BGFX_SRC
     "./bgfx/src/amalgamated.cpp")
