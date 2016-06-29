@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 3.1)
 project(bgfx)
 
-add_definitions(-DBGFX_CONFIG_DEBUG=1)
+if(CMAKE_BUILD_TYPE MATCHES DEBUG)
+	add_definitions(-DBGFX_CONFIG_DEBUG=1)
+endif()
 
 # -------------------- 3rd party -----------------------
 include_directories(3rdparty/khronos)
@@ -47,7 +49,7 @@ if(MSVC)
     add_definitions(-DBGFX_CONFIG_RENDERER_DIRECT3D12=0)
 
 	target_include_directories(bgfx3rdParty PUBLIC bx/include/compat/msvc)
-	add_definitions( "/D_CRT_SECURE_NO_WARNINGS " )
+	add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 	add_definitions(-D__STDC_FORMAT_MACROS)
 	
 	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc /wd4577 /wd4996")
