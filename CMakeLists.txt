@@ -8,12 +8,7 @@ if(CMAKE_BUILD_TYPE MATCHES DEBUG)
 endif()
 
 if(APPLE)
-    find_path(MALLOC_INCLUDE_DIR malloc.h HINTS /usr/include/malloc)
-    if(NOT MALLOC_INCLUDE_DIR)
-        message(FATAL_ERROR "Could not find malloc.h")
-    else()
-        message(STATUS "Found malloc.h: ${MALLOC_INCLUDE_DIR}")
-    endif()
+    include_directories("bx/include/compat/osx")
 endif()
 
 # -------------------- 3rd party -----------------------
@@ -73,13 +68,54 @@ file(GLOB BGFX_SRC
     "./bgfx/src/amalgamated.cpp")
     
 
+if(APPLE)
+    list(APPEND BGFX_SRC
+        "./bgfx/src/glcontext_nsgl.mm"
+        "./bgfx/src/renderer_mtl.mm"
+    )
+endif()
+
 add_library(bgfx STATIC ${BGFX_SRC})
 set_target_properties(bgfx PROPERTIES LINKER_LANGUAGE C)
 
-if(UNIX)
-    target_link_libraries(bgfx X11 GL pthread dl)
+if(APPLE)
+    set_target_properties(bgfx PROPERTIES CXX_STANDARD 98)
+
+    find_library(X11_LIBRARY X11)
+    if(NOT X11_LIBRARY)
+        message(FATAL_ERROR "Could not find X11 library")
+    else()
+        message(STATUS "Found X11 library: ${X11_LIBRARY}")
+    endif()
+
+    find_library(COCOA_LIBRARY Cocoa)
+    if(NOT COCOA_LIBRARY)
+        message(FATAL_ERROR "Could not find Cocoa library")
+    else()
+        message(STATUS "Found Cocoa library: ${COCOA_LIBRARY}")
+    endif()
+
+    find_library(METAL_LIBRARY Metal)
+    if(METAL_LIBRARY)
+        message(STATUS "Found Metal library: ${METAL_LIBRARY}")
+    endif()
+
+    find_library(QUARTZ_LIBRARY QuartzCore)
+    if(QUARTZ_LIBRARY)
+        message(STATUS "Found Quartz library: ${QUARTZ_LIBRARY}")
+    endif()
+
+    find_package(OpenGL REQUIRED)
+
+    list(APPEND OPENGL_LIBRARIES "${COCOA_LIBRARY}" "${METAL_LIBRARY}" "${QUARTZ_LIBRARY}")
+else()
+    set(X11_LIBRARY "X11")
+    set(OPENGL_LIBRARIES "GL")
 endif()
 
+if(UNIX)
+    target_link_libraries(bgfx ${X11_LIBRARY} ${OPENGL_LIBRARIES} pthread dl)
+endif()
 
 target_include_directories(bgfx PUBLIC bgfx/include)
 target_include_directories(bgfx PUBLIC bx/include)
@@ -98,6 +134,11 @@ file(GLOB COMMON_SRC
     "./bgfx/examples/common/imgui/*.cpp"
     "./bgfx/examples/common/nanovg/*.cpp")
     
+
+if(APPLE)
+    list(APPEND COMMON_SRC "./bgfx/examples/common/entry/entry_osx.mm")
+endif()
+
 add_library(bgfx_common STATIC ${COMMON_SRC})
 target_link_libraries(bgfx_common bgfx bgfx3rdParty)
 set_target_properties(bgfx_common PROPERTIES LINKER_LANGUAGE C)
