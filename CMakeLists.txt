@@ -7,6 +7,15 @@ if(CMAKE_BUILD_TYPE MATCHES DEBUG)
 	add_definitions(-DBGFX_CONFIG_DEBUG=1)
 endif()
 
+if(APPLE)
+    find_path(MALLOC_INCLUDE_DIR malloc.h HINTS /usr/include/malloc)
+    if(NOT MALLOC_INCLUDE_DIR)
+        message(FATAL_ERROR "Could not find malloc.h")
+    else()
+        message(STATUS "Found malloc.h: ${MALLOC_INCLUDE_DIR}")
+    endif()
+endif()
+
 # -------------------- 3rd party -----------------------
 include_directories(3rdparty/khronos)
 
@@ -76,6 +85,9 @@ target_include_directories(bgfx PUBLIC bgfx/include)
 target_include_directories(bgfx PUBLIC bx/include)
 target_link_libraries(bgfx bgfx3rdParty)
     
+if(APPLE)
+    target_include_directories(bgfx PRIVATE ${MALLOC_INCLUDE_DIR})
+endif()
 
 # ------------------ Common library ----------------------
 file(GLOB COMMON_SRC
@@ -92,6 +104,10 @@ set_target_properties(bgfx_common PROPERTIES LINKER_LANGUAGE C)
 
 target_include_directories(bgfx_common PUBLIC bgfx/examples/common)
 target_include_directories(bgfx_common PUBLIC bgfx/examples)
+
+if(APPLE)
+    target_include_directories(bgfx_common PRIVATE ${MALLOC_INCLUDE_DIR})
+endif()
 
 # ---------------------- Examples ------------------------
 if(BGFX_CMAKE_BUILD_EXAMPLES)
