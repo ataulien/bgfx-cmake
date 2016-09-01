@@ -129,9 +129,9 @@ endif()
 file(GLOB COMMON_SRC
     "./bgfx/examples/common/bounds.cpp"
     "./bgfx/examples/common/cube_atlas.cpp"
-    #"./bgfx/examples/common/*.cpp"
+    "./bgfx/examples/common/*.cpp"
     "./bgfx/examples/common/debugdraw/*.cpp"
-    #"./bgfx/examples/common/entry/*.cpp"
+    "./bgfx/examples/common/entry/*.cpp"
     "./bgfx/examples/common/font/*.cpp"
     "./bgfx/examples/common/imgui/*.cpp"
     "./bgfx/examples/common/nanovg/*.cpp")
