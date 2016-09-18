@@ -65,7 +65,7 @@ endif()
 
 # ------------------ Main library ----------------------
 file(GLOB BGFX_SRC
-    "./bgfx/src/amalgamated.cpp")
+    "./bgfx/src/*.cpp")
     
 
 if(APPLE)
