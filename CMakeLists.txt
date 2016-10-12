@@ -115,6 +115,10 @@ else()
     endif()
 endif()
 
+if(ANDROID)
+    target_link_libraries(bgfx log)
+endif()
+
 if(UNIX)
     target_link_libraries(bgfx ${X11_LIBRARY} ${OPENGL_LIBRARIES} pthread dl)
 endif()
