@@ -35,7 +35,11 @@ add_library(bgfx STATIC ${BGFX_SRC})
 set_target_properties(bgfx PROPERTIES LINKER_LANGUAGE C)
 
 if(UNIX)
-    target_link_libraries(bgfx X11 GL pthread dl)
+    target_link_libraries(bgfx pthread dl)
+    
+    if(NOT ANDROID)
+        target_link_libraries(bgfx X11 GL)
+    endif()
 endif()
 
 
