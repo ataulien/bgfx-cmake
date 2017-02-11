@@ -64,9 +64,8 @@ if(MSVC)
 endif()
 
 # ------------------ Main library ----------------------
-file(GLOB BGFX_SRC
-    "./bgfx/src/*.cpp")
-    
+SET(BGFX_SRC "./bgfx/src/amalgamated.cpp")
+file(GLOB BX_SRC "./bx/src/*.cpp")
 
 if(APPLE)
     list(APPEND BGFX_SRC
@@ -77,6 +76,9 @@ endif()
 
 add_library(bgfx STATIC ${BGFX_SRC})
 set_target_properties(bgfx PROPERTIES LINKER_LANGUAGE C)
+
+add_library(bx STATIC ${BX_SRC})
+target_include_directories(bx PUBLIC bx/include)
 
 if(APPLE)
     set_target_properties(bgfx PROPERTIES CXX_STANDARD 98)
@@ -125,7 +127,7 @@ endif()
 
 target_include_directories(bgfx PUBLIC bgfx/include)
 target_include_directories(bgfx PUBLIC bx/include)
-target_link_libraries(bgfx bgfx3rdParty)
+target_link_libraries(bgfx bgfx3rdParty bx)
     
 if(APPLE)
     target_include_directories(bgfx PRIVATE ${MALLOC_INCLUDE_DIR})
