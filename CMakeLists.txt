@@ -79,6 +79,14 @@ add_library(bx STATIC ${BX_SRC})
 add_library(bgfx STATIC ${BGFX_SRC})
 set_target_properties(bgfx PROPERTIES LINKER_LANGUAGE C)
 
+if(MINGW)
+    target_include_directories(bx PUBLIC bx/include/compat/mingw)
+endif()
+
+if(MSVC)
+    target_include_directories(bx PUBLIC bx/include/compat/msvc)
+endif()
+
 if(APPLE)
     set_target_properties(bgfx PROPERTIES CXX_STANDARD 98)
 
