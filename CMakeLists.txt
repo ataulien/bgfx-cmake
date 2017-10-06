@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.1)
 project(bgfx)
 
-set(BGFX_CMAKE_BUILD_EXAMPLES OFF CACHE BOOL "Whether to build the examples")
-
 if(CMAKE_BUILD_TYPE MATCHES DEBUG)
 	add_definitions(-DBGFX_CONFIG_DEBUG=1)
 endif()
@@ -90,13 +88,6 @@ endif()
 if(APPLE)
     set_target_properties(bgfx PROPERTIES CXX_STANDARD 98)
 
-    find_library(X11_LIBRARY X11)
-    if(NOT X11_LIBRARY)
-        message(FATAL_ERROR "Could not find X11 library")
-    else()
-        message(STATUS "Found X11 library: ${X11_LIBRARY}")
-    endif()
-
     find_library(COCOA_LIBRARY Cocoa)
     if(NOT COCOA_LIBRARY)
         message(FATAL_ERROR "Could not find Cocoa library")
@@ -119,7 +110,6 @@ if(APPLE)
     list(APPEND OPENGL_LIBRARIES "${COCOA_LIBRARY}" "${METAL_LIBRARY}" "${QUARTZ_LIBRARY}")
 else()
     if(NOT ANDROID)
-        set(X11_LIBRARY "X11")
         set(OPENGL_LIBRARIES "GL")
     endif()
 endif()
@@ -131,7 +121,7 @@ elseif(UNIX)
     if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
         set(DL dl)
     endif()
-    target_link_libraries(bgfx ${X11_LIBRARY} ${OPENGL_LIBRARIES} pthread ${DL})
+    target_link_libraries(bgfx ${OPENGL_LIBRARIES} pthread ${DL})
 endif()
 
 target_include_directories(bx PUBLIC bx/include)
@@ -169,34 +159,4 @@ target_include_directories(bgfx_common PUBLIC bgfx/examples)
 
 if(APPLE)
     target_include_directories(bgfx_common PRIVATE ${MALLOC_INCLUDE_DIR})
-endif()
-
-# ---------------------- Examples ------------------------
-if(BGFX_CMAKE_BUILD_EXAMPLES)
-
-    set(BGFX_LIBS bgfx bgfx_common bgfx3rdParty)
-
-    add_executable(ex_00_helloworld "bgfx/examples/00-helloworld/helloworld.cpp")
-    target_link_libraries(ex_00_helloworld ${BGFX_LIBS})
-
-    file(GLOB EX_09_HDR_SRC "bgfx/examples/09-hdr/*.cpp")
-    add_executable(ex_09_hdr ${EX_09_HDR_SRC})
-    target_link_libraries(ex_09_hdr ${BGFX_LIBS})
-
-
-
-        
-
-    # ----------------- Example run-script -------------------
-    CONFIGURE_FILE(
-        ${CMAKE_CURRENT_SOURCE_DIR}/runex.sh.in
-        ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/runex.sh
-    )
-
-    # Mark as executable
-    file(COPY ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/runex.sh
-    DESTINATION ${CMAKE_BINARY_DIR}
-    FILE_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ
-    GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
-
 endif()
