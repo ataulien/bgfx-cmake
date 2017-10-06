@@ -13,12 +13,14 @@ endif()
 include_directories(3rdparty/khronos)
 
 file(GLOB BGFX_3RD_PARTY
-    "./bgfx/3rdparty/edtaa3/*.cpp"
-    "./bgfx/3rdparty/etc1/*.cpp"
-    "./bgfx/3rdparty/etc2/*.cpp"
+    "./bimg/src/*.cpp"
+    "./bimg/3rdparty/edtaa3/*.cpp"
+    "./bimg/3rdparty/etc1/*.cpp"
+    "./bimg/3rdparty/etc2/*.cpp"
+    "./bimg/3rdparty/iqa/source/*.cpp"
     "./bgfx/3rdparty/fcpp/*.cpp"
     "./bgfx/3rdparty/ib-compress/*.cpp"
-    "./bgfx/3rdparty/libsquish/*.cpp"
+    "./bimg/3rdparty/libsquish/*.cpp"
     "./bgfx/3rdparty/ocornut-imgui/*.cpp"
     "./bgfx/3rdparty/stb/*.cpp"
     )
@@ -30,6 +32,9 @@ set_target_properties(bgfx3rdParty PROPERTIES LINKER_LANGUAGE C)
 target_include_directories(bgfx3rdParty PUBLIC bgfx/3rdparty/khronos)
 target_include_directories(bgfx3rdParty PUBLIC bgfx/3rdparty)
 target_include_directories(bgfx3rdParty PUBLIC bx/include)
+target_include_directories(bgfx3rdParty PUBLIC bimg/include)
+target_include_directories(bgfx3rdParty PUBLIC bimg/3rdparty)
+target_include_directories(bgfx3rdParty PUBLIC bimg/3rdparty/iqa/include)
 
 if(MINGW)
     target_include_directories(bgfx3rdParty PUBLIC bx/include/compat/mingw)
