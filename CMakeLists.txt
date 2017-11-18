@@ -126,7 +126,15 @@ elseif(UNIX)
     if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
         set(DL dl)
     endif()
-    target_link_libraries(bgfx ${OPENGL_LIBRARIES} pthread ${DL})
+
+    find_library(X11_LIBRARY X11)
+    if(NOT X11_LIBRARY)
+        message(FATAL_ERROR "Could not find X11 library")
+    else()
+        message(STATUS "Found X11 library: ${X11_LIBRARY}")
+    endif()
+
+    target_link_libraries(bgfx ${X11_LIBRARY} ${OPENGL_LIBRARIES} pthread ${DL})
 endif()
 
 target_include_directories(bx PUBLIC bx/include)
