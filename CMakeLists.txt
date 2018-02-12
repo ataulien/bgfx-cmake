@@ -130,6 +130,7 @@ elseif(UNIX)
 endif()
 
 target_include_directories(bx PUBLIC bx/include)
+target_include_directories(bx PUBLIC bx/3rdparty)
 
 target_include_directories(bgfx PUBLIC bgfx/include)
 target_include_directories(bgfx PUBLIC bx/include)
@@ -156,7 +157,7 @@ if(APPLE)
 endif()
 
 add_library(bgfx_common STATIC ${COMMON_SRC})
-target_link_libraries(bgfx_common bgfx bgfx3rdParty)
+target_link_libraries(bgfx_common bgfx bx bgfx3rdParty)
 set_target_properties(bgfx_common PROPERTIES LINKER_LANGUAGE C)
 
 target_include_directories(bgfx_common PUBLIC bgfx/examples/common)
