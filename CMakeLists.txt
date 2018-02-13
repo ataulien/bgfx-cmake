@@ -137,6 +137,7 @@ elseif(UNIX)
     endif()
 
     target_link_libraries(bgfx ${X11_LIBRARY} ${OPENGL_LIBRARIES} pthread ${DL})
+    target_link_libraries(bx pthread ${DL})
 endif()
 
 target_include_directories(bx PUBLIC bx/include)
